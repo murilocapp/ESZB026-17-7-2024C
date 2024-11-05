@@ -9,5 +9,5 @@ void setup(){
 void loop() {
   valorPot = analogRead(potPin);  // Lê o valor do potenciômetro
   Serial.println(valorPot);        // Envia o valor para a Raspberry Pi
-  delay(1000);                       
+  delay(500);                       
 }
