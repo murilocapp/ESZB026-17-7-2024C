@@ -9,7 +9,7 @@ const int pinoLED = LED_BUILTIN;   // pino do LED do alarme (LED na placa do Ard
 int dadoRecebido;                  // guarda o dado recebido
 int limiteAlarme = 0;              // limite do alarme
 int valorPot = 0;                  // guarda o valor lido no potenciometro
-byte buffer[5];                    // guarda o valor lido, limite de alarme e valor do LED
+byte buffer[7];                    // guarda o valor lido, limite de alarme e valor do LED
  
 void setup(){
   pinMode(pinoLED, OUTPUT);        // usar um LED como alarme
@@ -29,13 +29,18 @@ void enviaDadosPelaSerial(){              // opcional, para debug
   Serial.print(buffer[1],HEX); Serial.print(" "); // byte mais significativo do valor lido
   Serial.print(buffer[2],HEX); Serial.print(" "); // byte menos significativo do alarme
   Serial.print(buffer[3],HEX); Serial.print(" "); // byte mais significativo do alarme
-  Serial.println(buffer[4],HEX);                  // valor ajustado no LED
+  Serial.println(buffer[4],HEX); Serial.print(" "); // valor ajustado no LED
+  Serial.println(buffer[5],HEX); Serial.print(" "); // parte inteira do valor da voltagem
+  Serial.println(buffer[6],HEX); Serial.print(" "); // 2 casas decimais do valor da voltagem
 }
 
 void loop(){                       // Le o valor no potenciometro a cada 1 segundo
   valorPot = analogRead(PinoPotenciometro); // le dado com ADC de 10-bit
   buffer[0] = valorPot & 0xFF;     // byte menos significativo
   buffer[1] = valorPot >> 8;       // byte mais significativo
+  float valorvolts = valorPot * 5.0 / 1023.0;  // 2,45
+  buffer[5] =  (int)valorvolts // 2
+  buffer[6] =  (int)(valorvolts*100) % 100 // 45
   if (valorPot >= limiteAlarme) {  // verifica limite de alarme
      digitalWrite(pinoLED, HIGH);  // liga o LED do alarme
      buffer[4] = 0x01;
@@ -60,14 +65,21 @@ void funcaoDadoRecebido(int x){    // funcao chamada ao receber um dado
       buffer[3] = dado2;
       limiteAlarme = valorRecebido;
     }
-  }else if(dadoRecebido == 0x10){
-    limiteAlarme = valorPot
+  }else if(dadoRecebido == 0x10 && x == 1 ){
+      byte dado1 = buffer[0];      // completa com o byte menos significativo
+      byte dado2 = buffer[1];      // completa com o byte mais significativo
+      int valorRecebido =  dado1 | ( dado2 << 8 );
+      if ( valorRecebido >= 0 && valorRecebido <= 1023) {
+        buffer[2] = dado1;
+        buffer[3] = dado2;
+        limiteAlarme = valorRecebido;
+      }    
     }
 }
  
 void funcaoResposta(){             // funcao chamada para responder
   byte resposta = 0x00;
-  if ( dadoRecebido >= 0x00 && dadoRecebido <= 0x04 ){
+  if ( dadoRecebido >= 0x00 && dadoRecebido <= 0x06 ){
     resposta = buffer[dadoRecebido];
   }
   delay(1);                        // pode ser necessario em velocidades de comunicacao mais altas

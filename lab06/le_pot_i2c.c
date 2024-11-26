@@ -7,7 +7,7 @@
 #include<sys/ioctl.h>
 #include<linux/i2c.h>
 #include<linux/i2c-dev.h>
-#define BUFFER_SIZE 11      // 11 posicoes do buffer do Arduino: de 0x00 a 0x10
+#define BUFFER_SIZE 7     // 7 posicoes do buffer do Arduino: de 0x00 a 0x06
 
 int main(int argc, char **argv){
    int file, i, alert=0xFF;
@@ -29,17 +29,24 @@ int main(int argc, char **argv){
         return 1;
      }
      if (alert>1023 || alert<0) {
-        perror("Limite do alarme fora da faixa especificada.\n");
-        return 1;
+        //perror("Limite do alarme fora da faixa especificada.\n");
+        //return 1;
+        char alertbuf[] = {0x10};    // limite do alarme com 'comando' 0x10
+        if(write(file, alertbuf, 1)!=1){   // enviando os 1 byte do alertbuf
+           perror("Falha ao ajustar o limite do alarme!\n");
+           return 1;
+        }
      }
-     char alertbuf[] = {0x10, 0, 0};    // limite do alarme com 'comando' 0x02
-     alertbuf[1] = alert & 0xFF;        // byte menos significativo
-     alertbuf[2] = alert >> 8;          // byte mais significativo
+     else{
+        char alertbuf[] = {0x02, 0, 0};    // limite do alarme com 'comando' 0x02
+        alertbuf[1] = alert & 0xFF;        // byte menos significativo
+        alertbuf[2] = alert >> 8;          // byte mais significativo
 
-     printf("Ajustando limite do alarme em %d.\n", alert);
-     if(write(file, alertbuf, 3)!=3){   // enviando os 3 bytes do alertbuf
-        perror("Falha ao ajustar o limite do alarme!\n");
-        return 1;
+        printf("Ajustando limite do alarme em %d.\n", alert);
+        if(write(file, alertbuf, 3)!=3){   // enviando os 3 bytes do alertbuf
+           perror("Falha ao ajustar o limite do alarme!\n");
+           return 1;
+        }
      }
    }
    char rec[BUFFER_SIZE], send;         // cria buffer para receber os dados
@@ -58,9 +65,11 @@ int main(int argc, char **argv){
    valor =  rec[0] | ( rec[1] << 8 );   // converte 2 bytes de 8bits cada para 1 inteiro de 16bits
    limite =  rec[2] | ( rec[3] << 8 );
    valorLED = rec[4];
+   valorVolts = rec[5] + (rec[6]/100)
    printf("O valor lido foi %d.\n", valor);
    printf("O alarme esta ajustado em %d.\n", limite);
    printf("O LED esta ajustado em %d.\n", valorLED);
+   printf("O valor da voltagem %d.\n", valorLED);
 
    close(file);
    return 0;
