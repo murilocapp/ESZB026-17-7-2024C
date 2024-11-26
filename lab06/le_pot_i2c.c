@@ -65,11 +65,11 @@ int main(int argc, char **argv){
    valor =  rec[0] | ( rec[1] << 8 );   // converte 2 bytes de 8bits cada para 1 inteiro de 16bits
    limite =  rec[2] | ( rec[3] << 8 );
    valorLED = rec[4];
-   valorVolts = rec[5] + (rec[6]/100)
+   float valorVolts = rec[5] + (rec[6]/100.0);
    printf("O valor lido foi %d.\n", valor);
    printf("O alarme esta ajustado em %d.\n", limite);
    printf("O LED esta ajustado em %d.\n", valorLED);
-   printf("O valor da voltagem %d.\n", valorLED);
+   printf("O valor da voltagem %.2fV.\n", valorVolts);
 
    close(file);
    return 0;
