@@ -39,8 +39,8 @@ void loop(){                       // Le o valor no potenciometro a cada 1 segun
   buffer[0] = valorPot & 0xFF;     // byte menos significativo
   buffer[1] = valorPot >> 8;       // byte mais significativo
   float valorvolts = valorPot * 5.0 / 1023.0;  // 2,45
-  buffer[5] =  (int)valorvolts // 2
-  buffer[6] =  (int)(valorvolts*100) % 100 // 45
+  buffer[5] =  (int)valorvolts; // parte inteira da voltagem
+  buffer[6] =  (int)(valorvolts*100) % 100; // parte decimal da voltagem 
   if (valorPot >= limiteAlarme) {  // verifica limite de alarme
      digitalWrite(pinoLED, HIGH);  // liga o LED do alarme
      buffer[4] = 0x01;
