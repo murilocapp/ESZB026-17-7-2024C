@@ -3,6 +3,7 @@
 echo "Content-type: text/html"
 echo ""
 echo '<HTML><HEAD><meta charset="UTF-8">'
+echo '<meta http-equiv="refresh" content="3">'
 echo '<TITLE>SPI com Arduino</TITLE></HEAD>'
 echo '<BODY style="background-color:#FFFFE0"><H1>Coletando dados do potenciômetro no Arduino via SPI.</H1>'
 echo 'Dados coletados na porta A0 do Arduino a 1.000 amostras / segundo.<br>'
