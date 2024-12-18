@@ -73,7 +73,7 @@ def detecta_apneia(batch_dados: np.array):
             eventos[i] = 1
     print(f"numero eventos = {eventos.sum()}")
     if eventos.sum() < npontos*0.01:
-        print(f"PACIENTE EM APNEIA! valor={batch_dados.sum()}")
+        print(f"PACIENTE EM APNEIA!")
         liga_alarme()
 
 
