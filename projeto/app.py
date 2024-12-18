@@ -132,7 +132,7 @@ def update():
             eventos[x_atual] = 1
             eventos[(x_atual + 1) % aumento] = np.nan
         x_atual = x_atual + 1
-        if x_atual >= npontos:
+        if x_atual == npontos:
             detecta_apneia()
             x_atual = 0
             salvar_dados()
