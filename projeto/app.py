@@ -94,7 +94,7 @@ curve1 = p1.plot(data1)
 ptr1 = 0
 maxV = 5.0
 
-limRuido = 250.0 * maxV / 1023.0
+limRuido = 150.0 * maxV / 1023.0
 
 previousTime = time.time() * 1000  # pega a hora atual, em milissegundos
 texto = pg.TextItem(text="", color=(255, 255, 0), anchor=(0, 1))
@@ -123,8 +123,6 @@ p2.addItem(proxy3, row=2, col=0)
 
 conexaoSerial = serial.Serial("/dev/ttyACM0", 115200)
 inicia_coleta()
-
-
 
 def update():
     global data1, curve1, ptr1, conexaoSerial, x_atual, npontos, previousTime
@@ -160,7 +158,6 @@ def update():
             detecta_apneia(np.array(batch_dados), np.array(batch_tempos))
             batch_dados.clear()
             batch_tempos.clear()
-            #os.system("bash web/monta_grafico.sh")
 
 timer = QtCore.QTimer()
 timer.timeout.connect(update)
