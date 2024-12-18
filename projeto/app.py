@@ -150,7 +150,7 @@ def update():
             batch_tempos.clear()
             x_atual = 0
 
-        curve1.setData(batch_dados, connect="finite")
+        curve1.setData(data1, connect="finite")
         actualTime = time.time() * 1000
         taxa = str(round(actualTime - previousTime))
         previousTime = actualTime
