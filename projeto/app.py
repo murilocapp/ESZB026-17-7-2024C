@@ -145,7 +145,7 @@ def update():
         data1[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
-            salvar_dados(data1, data1, "teste") #dados para análise
+            salvar_dados(batch_dados,batch_tempos, "teste") #dados para análise
             batch_dados.clear()
             batch_tempos.clear()
             x_atual = 0
