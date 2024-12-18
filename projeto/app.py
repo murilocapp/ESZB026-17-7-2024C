@@ -138,7 +138,7 @@ def update():
         salvar_dados(eventos, "eventos.csv")
         salvar_dados(dado1, "dado.csv")
 
-        curve1.setData(dado1, connect="finite")
+        curve1.setData(data1, connect="finite")
         actualTime = time.time() * 1000
         taxa = str(round(actualTime - previousTime))
         previousTime = actualTime
