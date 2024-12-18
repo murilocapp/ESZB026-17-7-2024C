@@ -77,12 +77,11 @@ win.setWindowTitle("Monitor de Apneia")
 freqAquisicao = 100  # Hz
 tempoBatch = 10  # s
 npontos = freqAquisicao * tempoBatch
-aumento = npontos
 x_atual = 0
 p1 = win.addPlot()
 p1.setYRange(0, 5, padding=0)
-data1 = np.zeros(aumento)
-eventos = np.zeros(aumento)
+data1 = np.zeros(npontos)
+eventos = np.zeros(npontos)
 curve1 = p1.plot(data1)
 ptr1 = 0
 maxV = 5.0
@@ -127,12 +126,12 @@ def update():
 
         # Atualiza o gráfico
         data1[x_atual] = novodado
-        data1[(x_atual + 1) % aumento] = np.nan
+        data1[(x_atual + 1) % npontos] = np.nan
         if novodado >= limRuido: 
             eventos[x_atual] = 1
-            eventos[(x_atual + 1) % aumento] = np.nan
+            eventos[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
-        if x_atual == npontos:
+        if x_atual == npontos-1:
             detecta_apneia()
             x_atual = 0
             salvar_dados()
