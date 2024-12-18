@@ -134,7 +134,8 @@ def update():
         if x_atual == npontos-1:
             detecta_apneia()
             x_atual = 0
-            salvar_dados()
+            salvar_dados(eventos, "eventos.csv")
+            salvar_dados(dado1, "dado.csv")
 
         curve1.setData(data1, connect="finite")
         actualTime = time.time() * 1000
