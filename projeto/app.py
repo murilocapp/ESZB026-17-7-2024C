@@ -94,7 +94,7 @@ curve1 = p1.plot(data1)
 ptr1 = 0
 maxV = 5.0
 
-limRuido = 150.0 * maxV / 1023.0
+limRuido = 50.0 * maxV / 1023.0
 
 previousTime = time.time() * 1000  # pega a hora atual, em milissegundos
 texto = pg.TextItem(text="", color=(255, 255, 0), anchor=(0, 1))
