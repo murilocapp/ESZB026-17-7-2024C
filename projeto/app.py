@@ -86,10 +86,10 @@ win.setWindowTitle("Monitor de Apneia")
 freqAquisicao = 100  # Hz
 tempoBatch = 10  # s
 npontos = freqAquisicao * tempoBatch
-x_atual = 200
+x_atual = 0
 p1 = win.addPlot()
 p1.setYRange(0, 5, padding=0)
-data1 = np.zeros(200)
+data1 = np.zeros(npontos)
 curve1 = p1.plot(data1)
 ptr1 = 0
 maxV = 5.0
