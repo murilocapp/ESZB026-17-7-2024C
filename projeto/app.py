@@ -35,7 +35,7 @@ def saindo():
     print("Encerrando Sistema")
 
 
-def salvar_dados(dados: np.array, tempos: np.array, nome_arquivo: str = "dado.csv"):
+def salvar_dados(dados: np.array, nome_arquivo: str = "dado.csv"):
     file_path = f"{os.getcwd()}/data/{nome_arquivo}"
 
     # Certifica-se de que o diretório "data" existe
@@ -45,12 +45,12 @@ def salvar_dados(dados: np.array, tempos: np.array, nome_arquivo: str = "dado.cs
     if not os.path.exists(file_path):
         with open(file_path, mode="w", newline="") as arquivo_csv:
             escritor = csv.writer(arquivo_csv)
-            escritor.writerow(["tempo", "valor"])  # Cabeçalho com tempo e valor
+            escritor.writerow(["valor"])  # Cabeçalho com tempo e valor
 
     # Adiciona os novos dados ao arquivo existente
     with open(file_path, mode="a", newline="") as arquivo_csv:
         escritor = csv.writer(arquivo_csv)
-        escritor.writerows(zip(tempos, dados))  # Escreve tempo e valor
+        escritor.writerows(zip(dados))  # Escreve tempo e valor
 
 
 def atualiza_status(
@@ -65,19 +65,10 @@ def atualiza_status(
         print(f"Status do alarme atualizado para: {status}")
 
 
-def detecta_apneia(batch_dados: np.array, batch_tempos: np.array):
-    eventos_batch = np.zeros(len(batch_dados))
-    for i in range(len(batch_dados)):
-        if batch_dados[i] > limRuido:
-            eventos_batch[i] = 1
-
-    if eventos_batch.sum() < 1:
-        print("Evento detectado")
+def detecta_apneia(batch_dados: np.array):
+    if batch_dados.sum() < 100:
+        print(f"PACIENTE EM APNEIA! valor={batch_dados.sum()}")
         liga_alarme()
-
-    # Salvar os dados com os tempos
-    salvar_dados(batch_dados, batch_tempos, "leitura_sensor.csv")
-    salvar_dados(eventos_batch, batch_tempos, "eventos.csv")
 
 
 win = pg.GraphicsWindow()
@@ -89,7 +80,8 @@ npontos = freqAquisicao * tempoBatch
 x_atual = 0
 p1 = win.addPlot()
 p1.setYRange(0, 5, padding=0)
-data1 = np.zeros(npontos)
+data1 = np.zeros(npontos/5)
+eventos = np.zeros(npontos/5)
 curve1 = p1.plot(data1)
 ptr1 = 0
 maxV = 5.0
@@ -125,31 +117,24 @@ conexaoSerial = serial.Serial("/dev/ttyACM0", 115200)
 inicia_coleta()
 
 def update():
-    global data1, curve1, ptr1, conexaoSerial, x_atual, npontos, previousTime
-    global batch_dados, batch_tempos  # Adicionar batches de dados e tempos
-    batch_dados = []  # Batch para os valores do sensor
-    batch_tempos = []  # Batch para os timestamps
+    global data1, eventos, curve1, ptr1, conexaoSerial, x_atual, npontos, previousTime
 
     if conexaoSerial.inWaiting() > 1:
         dado1 = conexaoSerial.read()
         dado2 = conexaoSerial.read()
         novodado = float((ord(dado1) + ord(dado2) * 256.0) * maxV / 1023.0)
 
-
-        # Registra o dado e o tempo atual
-        timestamp = time.time()  # Tempo atual em segundos
-        batch_dados.append(novodado)
-        batch_tempos.append(timestamp)
-
         # Atualiza o gráfico
         data1[x_atual] = novodado
-        data1[(x_atual + 1) % npontos] = np.nan
+        data1[(x_atual + 1) % (npontos/5)] = np.nan
+        if novodado >= limRuido: 
+            eventos[x_atual] = 1
+            eventos[(x_atual + 1) % (npontos/5)] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
-            salvar_dados(batch_dados,batch_tempos, "teste") #dados para análise
-            batch_dados.clear()
-            batch_tempos.clear()
+            detecta_apneia()
             x_atual = 0
+            salvar_dados()
 
         curve1.setData(data1, connect="finite")
         actualTime = time.time() * 1000
