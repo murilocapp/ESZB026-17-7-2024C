@@ -89,7 +89,7 @@ npontos = freqAquisicao * tempoBatch
 x_atual = 0
 p1 = win.addPlot()
 p1.setYRange(0, 5, padding=0)
-data1 = np.zeros(200)
+data1 = np.zeros(npontos)
 curve1 = p1.plot(data1)
 ptr1 = 0
 maxV = 5.0
@@ -159,7 +159,7 @@ def update():
             detecta_apneia(np.array(batch_dados), np.array(batch_tempos))
             batch_dados.clear()
             batch_tempos.clear()
-            os.system("bash web/monta_grafico.sh")
+            #os.system("bash web/monta_grafico.sh")
 
 timer = QtCore.QTimer()
 timer.timeout.connect(update)
