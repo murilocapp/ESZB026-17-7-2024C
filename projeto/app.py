@@ -123,7 +123,7 @@ p2.addItem(proxy3, row=2, col=0)
 
 conexaoSerial = serial.Serial("/dev/ttyACM0", 115200)
 inicia_coleta()
-liga_alarme()
+
 
 
 def update():
