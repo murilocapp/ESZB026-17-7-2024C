@@ -127,10 +127,10 @@ def update():
 
         # Atualiza o gráfico
         data1[x_atual] = novodado
-        data1[(x_atual + 1) % (aumento)] = np.nan
+        data1[(x_atual + 1) % aumento] = np.nan
         if novodado >= limRuido: 
             eventos[x_atual] = 1
-            eventos[(x_atual + 1) % (aumento)] = np.nan
+            eventos[(x_atual + 1) % aumento] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
             detecta_apneia()
