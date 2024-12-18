@@ -86,10 +86,10 @@ win.setWindowTitle("Monitor de Apneia")
 freqAquisicao = 100  # Hz
 tempoBatch = 10  # s
 npontos = freqAquisicao * tempoBatch
-x_atual = 0
+x_atual = 200
 p1 = win.addPlot()
 p1.setYRange(0, 5, padding=0)
-data1 = np.zeros(npontos)
+data1 = np.zeros(200)
 curve1 = p1.plot(data1)
 ptr1 = 0
 maxV = 5.0
@@ -146,7 +146,7 @@ def update():
         if x_atual >= npontos:
             x_atual = 0
 
-        curve1.setData(data1[x_atual-npontos: x_atual], connect="finite")
+        curve1.setData(data1, connect="finite")
         actualTime = time.time() * 1000
         taxa = str(round(actualTime - previousTime))
         previousTime = actualTime
