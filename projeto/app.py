@@ -142,6 +142,7 @@ def update():
 
         # Atualiza o gráfico
         data1[x_atual] = novodado
+        data1[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
             x_atual = 0
