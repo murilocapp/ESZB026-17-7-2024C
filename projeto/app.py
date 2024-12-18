@@ -77,7 +77,7 @@ win.setWindowTitle("Monitor de Apneia")
 freqAquisicao = 100  # Hz
 tempoBatch = 10  # s
 npontos = freqAquisicao * tempoBatch
-aumento = round(npontos/5)
+aumento = round(npontos)
 x_atual = 0
 p1 = win.addPlot()
 p1.setYRange(0, 5, padding=0)
