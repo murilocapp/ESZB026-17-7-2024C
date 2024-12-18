@@ -83,10 +83,9 @@ p1.setYRange(0, 5, padding=0)
 data1 = np.zeros(npontos)
 eventos = np.zeros(npontos)
 curve1 = p1.plot(data1)
-ptr1 = 0
 maxV = 5.0
 
-limRuido = 50.0 * maxV / 1023.0
+limRuido = 100.0 * maxV / 1023.0
 
 previousTime = time.time() * 1000  # pega a hora atual, em milissegundos
 texto = pg.TextItem(text="", color=(255, 255, 0), anchor=(0, 1))
@@ -117,7 +116,7 @@ conexaoSerial = serial.Serial("/dev/ttyACM0", 115200)
 inicia_coleta()
 
 def update():
-    global data1, eventos, curve1, ptr1, conexaoSerial, x_atual, npontos, previousTime
+    global data1, eventos, curve1, conexaoSerial, x_atual, npontos, previousTime
 
     if conexaoSerial.inWaiting() > 1:
         dado1 = conexaoSerial.read()
@@ -134,8 +133,8 @@ def update():
         if x_atual == npontos-1:
             detecta_apneia()
             x_atual = 0
-            salvar_dados(eventos, "eventos.csv")
-            salvar_dados(dado1, "dado.csv")
+        salvar_dados(eventos, "eventos.csv")
+        salvar_dados(dado1, "dado.csv")
 
         curve1.setData(data1, connect="finite")
         actualTime = time.time() * 1000
