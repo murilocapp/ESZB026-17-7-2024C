@@ -145,6 +145,9 @@ def update():
         data1[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
+            detecta_apneia(np.array(batch_dados), np.array(batch_tempos))
+            batch_dados.clear()
+            batch_tempos.clear()
             x_atual = 0
 
         curve1.setData(batch_dados, connect="finite")
@@ -152,12 +155,7 @@ def update():
         taxa = str(round(actualTime - previousTime))
         previousTime = actualTime
         texto.setText("taxa: " + taxa.zfill(3) + "ms")
-
-        # Quando o batch atingir o tamanho especificado, processa os dados
-        if len(batch_dados) >= npontos:
-            detecta_apneia(np.array(batch_dados), np.array(batch_tempos))
-            batch_dados.clear()
-            batch_tempos.clear()
+        
 
 timer = QtCore.QTimer()
 timer.timeout.connect(update)
