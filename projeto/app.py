@@ -66,7 +66,12 @@ def atualiza_status(
 
 
 def detecta_apneia(batch_dados: np.array):
-    if batch_dados.sum() < 100:
+    global eventos, npontos
+    
+    for i in range(len(batch_dados)):
+        eventos[i] = 1
+
+    if eventos.sum() < npontos*0.01:
         print(f"PACIENTE EM APNEIA! valor={batch_dados.sum()}")
         liga_alarme()
 
@@ -126,12 +131,9 @@ def update():
         # Atualiza o gráfico
         data1[x_atual] = novodado
         data1[(x_atual + 1) % npontos] = np.nan
-        if novodado >= limRuido: 
-            eventos[x_atual] = 1
-            eventos[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
         if x_atual == npontos-1:
-            detecta_apneia()
+            detecta_apneia(data1)
             x_atual = 0
         salvar_dados(eventos, "eventos.csv")
         salvar_dados(dado1, "dado.csv")
