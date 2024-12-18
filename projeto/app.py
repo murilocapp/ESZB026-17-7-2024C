@@ -69,7 +69,8 @@ def detecta_apneia(batch_dados: np.array):
     global eventos, npontos
     print("analisando")
     for i in range(len(batch_dados)):
-        eventos[i] = 1
+        if batch_dados[i]>= limRuido:
+            eventos[i] = 1
     print(f"numero eventos = {eventos.sum()}")
     if eventos.sum() < npontos*0.01:
         print(f"PACIENTE EM APNEIA! valor={batch_dados.sum()}")
