@@ -135,6 +135,7 @@ def update():
         dado2 = conexaoSerial.read()
         novodado = float((ord(dado1) + ord(dado2) * 256.0) * maxV / 1023.0)
 
+
         # Registra o dado e o tempo atual
         timestamp = time.time()  # Tempo atual em segundos
         batch_dados.append(novodado)
