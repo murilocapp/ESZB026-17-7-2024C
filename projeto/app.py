@@ -80,7 +80,7 @@ def update():
         dado2 = conexaoSerial.read()
         novodado = float((ord(dado1) + ord(dado2) * 256.0) * maxV / 1023.0)
 
-        data1[x_atual] = novodado
+        data1[x_atual] = 3
         data1[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
