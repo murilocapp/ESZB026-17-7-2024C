@@ -36,7 +36,7 @@ def saindo():
 
 
 def salvar_dados(dados: np.array, tempos: np.array, nome_arquivo: str = "dado.csv"):
-    file_path = f"data/{nome_arquivo}"
+    file_path = f"{os.getcwd()}/data/{nome_arquivo}"
 
     # Certifica-se de que o diretório "data" existe
     os.makedirs("data", exist_ok=True)
@@ -145,7 +145,7 @@ def update():
         data1[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
-            detecta_apneia(np.array(batch_dados), np.array(batch_tempos))
+            salvar_dados(data1, data1, "teste") #dados para análise
             batch_dados.clear()
             batch_tempos.clear()
             x_atual = 0
