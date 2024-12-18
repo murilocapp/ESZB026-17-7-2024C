@@ -59,7 +59,7 @@ void loop(){
             }
     }
     if(ledState == 1){
-        alarm(4, loopDelay/10);
+        alarm();
     }
 
 
