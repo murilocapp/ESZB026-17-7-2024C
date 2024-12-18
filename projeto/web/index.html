@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="10"> <!-- Atualiza a página a cada 10 segundos -->
+    <title>Monitor de Apneia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        img {
+            max-width: 90%;
+            height: auto;
+            margin: 20px 0;
+        }
+        .link-alarme {
+            font-size: 1.2em;
+            margin: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .link-alarme:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monitor de Apneia</h1>
+    <h2>Rasterplot</h2>
+    <img src="/graficos/rasterplot.png" alt="Rasterplot de Eventos">
+    
+    <h2>Gráfico de Dispersão</h2>
+    <img src="/graficos/dispersao.png" alt="Gráfico de Dispersão">
+    
+    <h2>Status do Paciente</h2>
+    <a href="/alarme.html" class="link-alarme">Ver Status do Alarme</a>
+</body>
+</html>
