@@ -142,12 +142,11 @@ def update():
 
         # Atualiza o gráfico
         data1[x_atual] = novodado
-        #data1[(x_atual + 1) % npontos] = np.nan
         x_atual = x_atual + 1
         if x_atual >= npontos:
             x_atual = 0
 
-        curve1.setData(data1, connect="finite")
+        curve1.setData(data1[x_atual-500:x_atual], connect="finite")
         actualTime = time.time() * 1000
         taxa = str(round(actualTime - previousTime))
         previousTime = actualTime
