@@ -4,7 +4,7 @@
 ARQUIVO_DADOS="data/leitura_sensor.csv"
 ARQUIVO_EVENTOS="data/eventos.csv"
 ARQUIVO_STATUS="data/status_alarme.txt"
-ARQUIVO_ALARME="/var/www/html/alarme.html"
+ARQUIVO_ALARME="/var/www/html/alarme.html"  
 
 # Diretório para gráficos
 DIR_GRAFICOS="/var/www/html/graficos"
@@ -30,33 +30,69 @@ EOF
 
 
 # Função para gerar a página de status do alarme
-gera_pagina_alarme() {
+gera_pagina() {
     local status=$(cat "$ARQUIVO_STATUS")
-    
-    echo '<!DOCTYPE html>' > "$ARQUIVO_ALARME"
-    echo '<html>' >> "$ARQUIVO_ALARME"
-    echo '<head>' >> "$ARQUIVO_ALARME"
-    echo '    <meta http-equiv="refresh" content="10">' >> "$ARQUIVO_ALARME"
-    echo '    <title>Status do Alarme</title>' >> "$ARQUIVO_ALARME"
-    echo '    <style>' >> "$ARQUIVO_ALARME"
-    echo '        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }' >> "$ARQUIVO_ALARME"
-    echo '        .status { font-size: 1.5em; margin-top: 50px; }' >> "$ARQUIVO_ALARME"
-    echo '    </style>' >> "$ARQUIVO_ALARME"
-    echo '</head>' >> "$ARQUIVO_ALARME"
-    echo '<body>' >> "$ARQUIVO_ALARME"
-    echo '    <h1>Status do Alarme</h1>' >> "$ARQUIVO_ALARME"
+
+    cat <<EOF > "$ARQUIVO_ALARME"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="10"> <!-- Atualiza a página a cada 10 segundos -->
+    <title>Monitor de Apneia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c4ae69;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            color: #11161b;
+        }
+        img {
+            max-width: 90%;
+            height: auto;
+            margin: 20px 0;
+        }
+        .status {
+            font-size: 1.2em;
+            margin: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monitor de Apneia</h1>
+    <h2>Rasterplot</h2>
+    <img src="/graficos/rasterplot.png" alt="Rasterplot de Eventos">
+
+    <h2>Gráfico de Dispersão</h2>
+    <img src="/graficos/dispersao.png" alt="Gráfico de Dispersão">
+
+    <h2>Status do Paciente</h2>
+EOF
 
     if [[ "$status" == "Alarme Ativado" ]]; then
-        echo '    <div class="status" style="color: red; font-weight: bold;">⚠️ Alarme Disparado! Paciente em Risco!</div>' >> "$ARQUIVO_ALARME"
+        cat <<EOF >> "$ARQUIVO_ALARME"
+    <div class="status" style="color: red; font-weight: bold;">⚠️ Alarme Disparado! Paciente em Risco!</div>
+EOF
     else
-        echo '    <div class="status" style="color: green; font-weight: bold;">✅ Status Normal. Paciente Estável.</div>' >> "$ARQUIVO_ALARME"
+        cat <<EOF >> "$ARQUIVO_ALARME"
+    <div class="status" style="color: green; font-weight: bold;">✅ Status Normal. Paciente Estável.</div>
+EOF
     fi
 
-    echo '</body>' >> "$ARQUIVO_ALARME"
-    echo '</html>' >> "$ARQUIVO_ALARME"
+    cat <<EOF >> "$ARQUIVO_ALARME"
+</body>
+</html>
+EOF
 }
 
 # Chamar as funções
 gera_graficos
 atualiza_status
-gera_pagina_alarme
+gera_pagina

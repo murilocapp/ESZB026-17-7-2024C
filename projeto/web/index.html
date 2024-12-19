@@ -6,29 +6,28 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #c4ae69;
             text-align: center;
             margin: 0;
             padding: 20px;
+            color: #11161b;
         }
         img {
             max-width: 90%;
             height: auto;
             margin: 20px 0;
         }
-        .link-alarme {
+        .status {
             font-size: 1.2em;
             margin: 20px;
             display: inline-block;
             padding: 10px 20px;
-            background-color: #007BFF;
+            background-color: #11161b;
             color: white;
             text-decoration: none;
             border-radius: 5px;
         }
-        .link-alarme:hover {
-            background-color: #0056b3;
-        }
+        
     </style>
 </head>
 <body>
@@ -40,6 +39,7 @@
     <img src="/graficos/dispersao.png" alt="Gráfico de Dispersão">
     
     <h2>Status do Paciente</h2>
-    <a href="/alarme.html" class="link-alarme">Ver Status do Alarme</a>
+    <div class="status" style="color: rgb(35, 199, 35); font-weight: bold;">✅ Status Normal. Paciente Estável.</div>
+    <div class="status" style="color: red; font-weight: bold;">⚠️ Alarme Disparado! Paciente em Risco!</div>
 </body>
 </html>
