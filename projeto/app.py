@@ -137,9 +137,9 @@ def update():
             detecta_apneia(data1)
             x_atual = 0
         salvar_dados(eventos, "eventos.csv")
-        salvar_dados(dado1, "dado.csv")
+        salvar_dados(data1, "dado.csv")
 
-        curve1.setData(dado1, connect="finite")
+        curve1.setData(data1, connect="finite")
         actualTime = time.time() * 1000
         taxa = str(round(actualTime - previousTime))
         previousTime = actualTime
